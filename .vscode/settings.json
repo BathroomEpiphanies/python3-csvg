@@ -1,0 +1,6 @@
+{
+    "editor.trimAutoWhitespace": false,
+    
+    "python.analysis.extraPaths": ["../csvg/"]
+    
+}
