@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "csvg"
 version = "VERSION"
-description = "Read and write Python Recognizable Object Notation"
+description = "(C)onstraint (S)olved (V)ector (G)raphics"
 readme = "README.md"
 authors = [{ name = "csvg", email = "fredrik@atmer.se" }]
 license = { file = "LICENSE" }
