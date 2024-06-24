@@ -24,6 +24,7 @@ class Element(ABC):
         'dominant_baseline': 'dominant-baseline',
         'fill_opacity': 'fill-opacity',
         'stroke_width': 'stroke-width',
+        'stroke_dasharray': 'stroke-dasharray',
         'stroke_linejoin': 'stroke-linejoin',
         'stroke_linecap': 'stroke-linecap',
         'stroke_miterlimit': 'stroke-miterlimit',
