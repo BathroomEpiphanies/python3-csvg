@@ -33,7 +33,7 @@ class SVG(Element):
                 self.content = fp.read()
         self.content = re.sub(r'width="([0-9.]+)mm"', r'width="\1"', self.content)
         self.content = re.sub(r'height="([0-9.]+)mm"', r'height="\1"', self.content)
-        pattern = re.compile(r'.*viewBox="([0-9.]+) ([0-9.]+) ([0-9.]+) ([0-9.]+)".*', re.DOTALL)
+        pattern = re.compile(r'.*viewBox="([0-9.-]+) ([0-9.-]+) ([0-9.-]+) ([0-9.-]+)".*', re.DOTALL)
         match = re.match(pattern, self.content)
         self._viewBox = match.groups()
         x,y,w,h = self._viewBox
