@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import sys
+
 from abc import ABC, abstractmethod
 from typing import Any
 
@@ -86,9 +88,11 @@ class Element(ABC):
         if hasattr(self, 'elements'):
             for element in self.elements:
                 element.solve(self._solver)
-        self._add_to_solver(self._solver)
         if solver is None:
+            self._add_to_solver(self._solver)
             self._solver.check()
+            print('Unsat core', file=sys.stderr)
+            print(self._solver.unsat_core(), file=sys.stderr)
             model = self._solver.model()
             self._set_model(model)
         return self
@@ -108,10 +112,13 @@ class Element(ABC):
             self,
             solver,
     ) -> None:
+        print(f'Adding {self.id} to solver', file=sys.stderr)
         for _,value in self._arithmeticals.items():
-            solver.add(value)
+            print(str(value))
+            solver.assert_and_track(value, str(value))
         for value in self._constraints:
-            solver.add(value)
+            print(str(value))
+            solver.assert_and_track(value, str(value))
     
     
     @abstractmethod
@@ -135,7 +142,6 @@ class Element(ABC):
         output = []
         if not attributes:
             attributes = self._attributes | self._ARITHMETICALS
-            #attributes = self._attributes | self._arithmeticals.keys()
         for attribute in attributes:
             tag = self._ATTRIBUTES_TO_TAGS.get(attribute, attribute)
             if tag is None:
