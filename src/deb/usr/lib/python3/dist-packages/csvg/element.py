@@ -24,6 +24,8 @@ class Element(ABC):
         'font_weight': 'font-weight',
         'text_anchor': 'text-anchor',
         'dominant_baseline': 'dominant-baseline',
+        'letter_spacing': 'letter-spacing',
+        'font_stretch': 'font-stretch',
         'fill_opacity': 'fill-opacity',
         'stroke_width': 'stroke-width',
         'stroke_dasharray': 'stroke-dasharray',
@@ -61,7 +63,6 @@ class Element(ABC):
         if __name in type(self)._ARITHMETICALS:
             if __name not in self._arithmeticals:
                 super().__setattr__(__name, z3.Real(f'{self.__getattribute__("id")}.{__name}'))
-            # print(__name, __value, file=sys.stderr)
             self._arithmeticals[__name] = self.__getattribute__(__name)==__value
         else:
             super().__setattr__(__name, __value)
@@ -90,9 +91,10 @@ class Element(ABC):
                 element.solve(self._solver)
         if solver is None:
             self._add_to_solver(self._solver)
-            self._solver.check()
+            result = self._solver.check()
             print('Unsat core', file=sys.stderr)
             print(self._solver.unsat_core(), file=sys.stderr)
+            print(f'Result: {result}', file=sys.stderr)
             model = self._solver.model()
             self._set_model(model)
         return self
@@ -114,10 +116,10 @@ class Element(ABC):
     ) -> None:
         print(f'Adding {self.id} to solver', file=sys.stderr)
         for _,value in self._arithmeticals.items():
-            print(str(value))
+            print(str(value), file=sys.stderr)
             solver.assert_and_track(value, str(value))
         for value in self._constraints:
-            print(str(value))
+            print(str(value), file=sys.stderr)
             solver.assert_and_track(value, str(value))
     
     
@@ -142,6 +144,7 @@ class Element(ABC):
         output = []
         if not attributes:
             attributes = self._attributes | self._ARITHMETICALS
+            #attributes = self._attributes | self._arithmeticals.keys()
         for attribute in attributes:
             tag = self._ATTRIBUTES_TO_TAGS.get(attribute, attribute)
             if tag is None:
