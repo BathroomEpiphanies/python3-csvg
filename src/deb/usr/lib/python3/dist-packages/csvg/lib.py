@@ -2,12 +2,16 @@ import subprocess
 import sys
 import z3
 
-def get_float(model:z3.Model, variable:z3.Real):
-    #print(f'getting float: {model=} {variable=}', sys.stderr)
+def get_float(
+        model:z3.Model,
+        variable:z3.Real,
+) -> float:
     return float(model[variable].as_decimal(-1))
 
 
-def svg_to_pdf(svg:str) -> str:
+def svg_to_pdf(
+        svg:str,
+) -> str:
     command = [
         'inkscape',
         '--pipe',
@@ -17,6 +21,4 @@ def svg_to_pdf(svg:str) -> str:
     ]
     process = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout,stderr = process.communicate(input=svg.encode())
-    #stdout = stdout.decode().split('\n')
-    #stdout = stdout.split('\n')
     return stdout

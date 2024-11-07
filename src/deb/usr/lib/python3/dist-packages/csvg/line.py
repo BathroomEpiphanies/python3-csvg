@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from collections import deque
+
 from .element import Element
 
 
@@ -13,5 +15,7 @@ class Line(Element):
     }
     
     
-    def to_svg(self):
-        return f'<line {self._get_tags()} />'
+    def _to_svg(
+            self,
+    ) -> deque[str]:
+        return deque([f'<line {self._get_tags()} />'])

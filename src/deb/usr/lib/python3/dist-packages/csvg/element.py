@@ -3,6 +3,7 @@ from __future__ import annotations
 import sys
 
 from abc import ABC, abstractmethod
+from collections import deque
 from typing import Any
 
 import z3
@@ -124,9 +125,9 @@ class Element(ABC):
     
     
     @abstractmethod
-    def to_svg(
-        self,
-    ) -> str:
+    def _to_svg(
+            self,
+    ) -> deque[str]:
         ...
     
     

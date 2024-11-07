@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from collections import deque
+
 from .element import Element
 
 
@@ -12,5 +14,7 @@ class Circle(Element):
     }
     
     
-    def to_svg(self):
-        return f'<circle {self._get_tags()} />'
+    def _to_svg(
+            self,
+    ) -> deque[str]:
+        return deque([f'<circle {self._get_tags()} />'])

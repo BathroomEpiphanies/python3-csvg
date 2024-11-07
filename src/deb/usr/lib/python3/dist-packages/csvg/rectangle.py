@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from collections import deque
+
 from .element import Element
 
 
@@ -31,5 +33,7 @@ class Rectangle(Element):
         self._constraints.append(self.height == self.bottom - self.top)
     
     
-    def to_svg(self):
-        return f'<rect {self._get_tags()} />'
+    def _to_svg(
+            self,
+    ) -> deque[str]:
+        return deque([f'<rect {self._get_tags()} />'])

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+from collections import deque
 from pathlib import Path
 
 from .element import Element
@@ -19,7 +20,7 @@ class SVG(Element):
     
     
     _ATTRIBUTES_TO_TAGS = Element._ATTRIBUTES_TO_TAGS | {
-        '_viewBox': None
+        '_viewBox': None,
     }
     
     
@@ -46,7 +47,9 @@ class SVG(Element):
             self.height = float(h)/float(w) * self.width
     
     
-    def to_svg(self):
+    def _to_svg(
+            self,
+    ) -> deque[str]:
         x,y,w,h = self._viewBox
         transforms = [
             f'translate({self._get_value(self.left)} {self._get_value(self.top)})',
@@ -54,7 +57,8 @@ class SVG(Element):
             f'translate({-float(x)} {-float(y)})',
 
         ]
-        output = [f'<g transform="{" ".join(transforms)}" {self._get_tags()}>']
+        output = deque()
+        output.extend([f'<g transform="{" ".join(transforms)}" {self._get_tags()}>'])
         output.extend(self.content.split('\n'))
-        output.append('</g>')
-        return '\n'.join(output)
+        output.extend(['</g>'])
+        return output

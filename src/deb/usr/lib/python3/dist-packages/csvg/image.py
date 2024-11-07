@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import base64
 import io
+from collections import deque
 from pathlib import Path
 
 from PIL import Image as _PIL_Image
@@ -40,7 +41,7 @@ class Image(Element):
             self.height = float(image.height)/float(image.width) * self.width
     
     
-    def to_svg(
+    def _to_svg(
             self,
-    ) -> str:
-        return f'<image {self._get_tags()} xlink:href="data:base64,{self.content}"/>'
+    ) -> deque[str]:
+        return deque([f'<image {self._get_tags()} xlink:href="data:base64,{self.content}"/>'])

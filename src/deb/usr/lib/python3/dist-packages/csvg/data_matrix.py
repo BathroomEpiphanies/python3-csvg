@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import subprocess
 import sys
+from collections import deque
 from pathlib import Path
 
 from .element import Element
@@ -58,15 +59,16 @@ class DataMatrix(Element):
             self.height = float(self._h)/float(self._w) * self.width
     
     
-    def to_svg(
-            self
-    ) -> str:
+    def _to_svg(
+            self,
+    ) -> deque[str]:
         transforms = [
             f' translate({self._get_value(self.left)} {self._get_value(self.top)})',
             f' scale({self._get_value(self.width)/float(self._w)} {self._get_value(self.height)/float(self._h)})',
             f' translate(-1 -1)',
         ]
-        output = [f'<g transform="{" ".join(transforms)}" {self._get_tags()}>']
+        output = deque()
+        output.extend([f'<g transform="{" ".join(transforms)}" {self._get_tags()}>'])
         output.extend(self.content)
-        output.append('</g>')
-        return '\n'.join(output)
+        output.extend(['</g>'])
+        return output
